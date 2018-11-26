@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="../base.js"></script>
 	</head>
 	<body>	
+        <a href= "../MainMenu/mainmenu.html.php"> Go Back </a>
 
         <h2>Bee Movie Script</h2>
         <pre>  

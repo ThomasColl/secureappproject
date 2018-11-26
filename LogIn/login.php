@@ -60,7 +60,7 @@
 					$_SESSION["errorsForLoginPHP"] = "<br> The username/password combination does not match";
 					header("Location: login.html.php");
 					exit;
-			}
+				}
 				else {
 					$_SESSION["sucessforLoginPHP"] = $name;
 					$_SESSION["token"] = random_bytes(32);

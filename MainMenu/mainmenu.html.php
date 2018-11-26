@@ -31,11 +31,12 @@
 				unset($_SESSION["sucessformainmenuPHP"]);
 			}
 		?>
+		Welcome <?php echo $_SESSION["sucessforLoginPHP"]; ?> to the project! <br><br>
 
 		So... you probaly want to know what it is you can do while you're here. I mean you could go and <a href="../ChangePassword/changepassword.html.php"> change your password </a>.<br>
 		You could alternatvely go and read this <a href="../SecretLink/secret.html.php"> go to the secret link </a> OR <a href="../Game/game.html.php"> play a game </a> <br>
 		<br><br>
-
+		
 		<a href='logout.php'><button>Log Out</button></a>
 	</body>
 </html>
