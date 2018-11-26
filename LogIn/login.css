@@ -1,0 +1,41 @@
+/* Name: Thomas Coll */
+/* Student Number: C00204384 */
+
+form
+{
+	margin:1em;
+	max-width:500px;
+	border: 2px solid #cddde4;
+	background-color:#ffffff;
+	border-radius: 25px;
+}
+label
+{
+	display:inline-block;
+	width:9em;
+	margin-right:1em;
+	margin-top:1em;
+	text-align:right;
+}
+body
+{
+	/* Use webkit to create an appealing design */
+	background: -webkit-linear-gradient(top, #f2f6f8 0%,#d8e1e7 50%,#b5c6d0 51%,#e0eff9 100%);
+}
+
+/* Used to give clear and submit buttons an appealing design */
+.button
+{
+	background-color: #cddde4;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+}
+/* Used to centre divs */
+#centre
+{
+	width: 100%;
+	margin: 0% auto;
+	text-align:center;
+}
