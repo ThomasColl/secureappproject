@@ -36,18 +36,13 @@
 
 			if($name == "" || $pass == "") {
 				$_SESSION["errorsForLoginPHP"] = "<br> No input"; 
-				echo "<br> The fucking username or password didnt get assigned";
-				echo "<br> USERNAME: " . $name;
-				echo "<br> PASSWORD: " . $pass;
+				echo "<br> The username or password didnt get assigned";
 				$isTomfuckeryAtPlay = true;
 			}
 			
 			if(!$isTomfuckeryAtPlay) {
 
 				include("../db.inc.php");
-
-				echo "<br> username " . $name;
-				echo "<br> password " . $pass;
 
 				$sql = "SELECT * FROM users WHERE username= '" . $name . "'";
 				$result = mysqli_query($con, $sql);
@@ -57,9 +52,7 @@
 					die("An Error in the SQL Query : " . mysqli_error($con));
 				}
 				if($row['username'] != $name || $row['password'] != $crypto->encrypt($pass, $row['salt'])) {
-					$_SESSION["errorsForLoginPHP"] = "<br> The username/password combination does not match";
-					header("Location: login.html.php");
-					exit;
+					$_SESSION["errorsForLoginPHP"] = "<br> The username (". $name . ")/password combination does not match";
 				}
 				else {
 					$_SESSION["sucessforLoginPHP"] = $name;
@@ -68,19 +61,18 @@
 					exit;
 				}
 
+				//close the connection
+				$con->close();
+
+
 			}
 			else {
-				echo "There is some tomfuckery at play!";
-				// header("Location: login.html.php");
-				// exit;
+				echo "There is something dodgey at play!";
 			}
-			
-			//close the connection
-			$con->close();
-
 		}
 		else {
-			$_SESSION["errorsForLoginPHP"] = "<br> You are locked out for making too many mistakes";
+			header("Location: lockout.php");
+			exit;
 		}
 	}
 	header("Location: login.html.php");

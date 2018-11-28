@@ -47,9 +47,7 @@
 
 		if($name == "" || $pass == "") {
 			$_SESSION["errorsForSignupPHP"] = "<br> No input"; 
-			echo "<br> The fucking username or password didnt get assigned";
-			echo "<br> USERNAME: " . $name;
-			echo "<br> PASSWORD: " . $pass;
+			echo "<br> The username or password didnt get assigned";
 			$isTomfuckeryAtPlay = true;
 		}
 		
@@ -86,17 +84,11 @@
 		}
 		//if there are errors then add them to an input to post back
 		else {
-			echo "There is some tomfuckery at play!";
-			// header("Location: signup.html.php");
-			// exit;
+			echo "There is messing at play!";
 		}
 		
 		//close the connection
 		$con->close();
-	}
-	else {
-		// header("Location: signup.html.php");
-		// exit;
 	}
 
 	header("Location: signup.html.php");

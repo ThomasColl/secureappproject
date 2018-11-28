@@ -51,9 +51,6 @@
 
 		if($oldPassword == "" || $pass == "") {
 			$_SESSION["errorsforChangePasswordPHP"] = "<br> No input"; 
-			echo "<br> The fucking username or password didnt get assigned";
-			echo "<br> Old PASSWORD: " . $oldPassword;
-			echo "<br> PASSWORD: " . $pass;
 			$isTomfuckeryAtPlay = true;
 		}
 		
@@ -71,6 +68,7 @@
 			}
 			if($row['password'] != $crypto->encrypt($oldPassword, $row['salt'])) {
 				$_SESSION["errorsforChangePasswordPHP"] = "<br> The old password is incorrect";
+				$con->close();
 				header("Location: changepassword.html.php");
 				exit;
 			}
@@ -84,6 +82,7 @@
 				
 				}
 				else {
+					$con->close();
 					header("Location: ../MainMenu/logout.php");
 					exit;
 				}
@@ -91,7 +90,7 @@
 		}
 		//if there are errors then add them to an input to post back
 		else {
-			echo "There is some tomfuckery at play!";
+			echo "<br> There is something incorrect here!";
 		}
 		
 		//close the connection

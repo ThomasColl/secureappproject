@@ -6,28 +6,21 @@
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 	if(isset($_SESSION['lockout'])) {
-		$isTime = $_SESSION['lockout'] + (5 * 60 * 1000);
-		$curTime = new DateTime();
-		$curTime = $curTime->format('u');
-		$_SESSION["errorsForLoginPHP"] .= "<br> You are still locked out <br>";
-
-		if($isTime <= $curTime) {
-			unset($_SESSION['lockout']);
-		}
+		header("Location: lockout.php");
+		exit;
 	}
-	else {
-		if(!isset($_SESSION['loginAttempts'])) {
-			$_SESSION['loginAttempts'] = 3;
-		}
-		else if (isset($_SESSION['errorsForLoginPHP'])) {
-			$_SESSION['loginAttempts'] = $_SESSION['loginAttempts'] - 1;
-			if($_SESSION['loginAttempts'] <= 0) {
-				unset($_SESSION['loginAttempts']);
-				$t = new DateTime();
-				$_SESSION['lockout'] = $t->format('u');
-				$_SESSION["errorsForLoginPHP"] .= "<br> You are locked out of the system for 5 minutes <br>";
-			}
-		}	
+	else if(!isset($_SESSION['loginAttempts'])) {
+		$_SESSION['loginAttempts'] = 3;
+	}
+	else if(isset($_SESSION['errorsForLoginPHP'])) {
+		$_SESSION['loginAttempts'] -= 1;
+	}
+
+	if($_SESSION['loginAttempts'] <= 0) {
+		unset($_SESSION['loginAttempts']);
+		$_SESSION['lockout'] = date("U") + (5 * 60 );
+		header("Location: lockout.php");
+		exit;
 	}
 ?>
 <html>
@@ -45,6 +38,14 @@
 					echo "<br><br>";
 					echo $_SESSION["errorsForLoginPHP"];
 					unset($_SESSION["errorsForLoginPHP"]);
+					try {
+						echo "You have " . $_SESSION['loginAttempts'] . " attempts left";
+					}
+					catch (Exception $e) {
+						$_SESSION['lockout'] = date("U") + (5 * 60 );
+						header("Location: lockout.php");
+						exit;
+					}
 				}
 				else if(isset($_SESSION["sucessforLoginPHP"])) {
 					echo "<br><br>";
