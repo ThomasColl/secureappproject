@@ -9,8 +9,6 @@
     date_default_timezone_set("UTC");
     $secs = 300;
     $curTime = date("U");
-    // $curTime = new DateTime();
-    // $curTime = $curTime->format('u');
 
     try {
         $secs = $_SESSION['lockout'] - $curTime;

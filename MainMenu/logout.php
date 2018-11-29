@@ -9,10 +9,6 @@
     }
     else {
         session_unset($_SESSION);
-        session_unset($_SESSION['token']);
-        session_unset($_SESSION["errorsForLoginPHP"]);
-        session_unset($_SESSION["sucessforLoginPHP"]);
-        session_unset($_SESSION);
         session_destroy();
         session_abort();
         session_write_close();

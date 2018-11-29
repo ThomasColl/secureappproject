@@ -13,7 +13,7 @@
 			include('../utilities.php');
 			$utilities = new Filters();
 			$crypto = new Encryption();
-			$isTomfuckeryAtPlay = false;
+			$isValid = false;
 			$name = "";
 			$pass = "";
 			
@@ -23,7 +23,7 @@
 			}
 			else {
 				$_SESSION["errorsForLoginPHP"] = "<br> The username has dodgey shit in it";
-				$isTomfuckeryAtPlay = true;
+				$isValid = true;
 			}
 			//Check to see if the password inputted has illegal characters
 			if($utilities->filterValidation($_POST['password'])) {
@@ -31,16 +31,16 @@
 			}
 			else {
 				$_SESSION["errorsForLoginPHP"] = "<br> The password has dodgey shit in it"; 
-				$isTomfuckeryAtPlay = true;
+				$isValid = true;
 			}
 
 			if($name == "" || $pass == "") {
 				$_SESSION["errorsForLoginPHP"] = "<br> No input"; 
 				echo "<br> The username or password didnt get assigned";
-				$isTomfuckeryAtPlay = true;
+				$isValid = true;
 			}
 			
-			if(!$isTomfuckeryAtPlay) {
+			if(!$isValid) {
 
 				include("../db.inc.php");
 

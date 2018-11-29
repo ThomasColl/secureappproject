@@ -47,11 +47,6 @@
 						exit;
 					}
 				}
-				else if(isset($_SESSION["sucessforLoginPHP"])) {
-					echo "<br><br>";
-					echo $_SESSION["sucessforLoginPHP"];
-					unset($_SESSION["sucessforLoginPHP"]);
-				}
 			}
 		?>
 		<form name="loginform" action="login.php" onsubmit="return confirmCheck(this)" method="POST">

@@ -12,7 +12,7 @@
 		include('../utilities.php');
 		$utilities = new Filters();
 		$crypto = new Encryption();
-		$isTomfuckeryAtPlay = false;
+		$isTheHTMLInputInvalid = false;
 		$name = "";
 		$pass = "";
 		
@@ -22,9 +22,9 @@
 		}
 		else {
 			$_SESSION["errorsForSignupPHP"] = "<br> The username has dodgey shit in it";
-			$isTomfuckeryAtPlay = true;
+			$isTheHTMLInputInvalid = true;
 		}
-		//Check to see if the password inputted has illegal characters
+		//Check to see if the password inputted has illegal characters and is the same as the confirm password
 		if($utilities->filterValidation($_POST['password'])) {
 			if ($_POST['password'] == $_POST['cpassword']) {
 				if($utilities->determinePasswordStrength($_POST['password'])) {
@@ -32,26 +32,26 @@
 				}
 				else {
 					$_SESSION["errorsForSignupPHP"] = "<br> The password is not strong enough <br>";
-					$isTomfuckeryAtPlay = true; 
+					$isTheHTMLInputInvalid = true; 
 				}
 			}
 			else {
 				$_SESSION["errorsForSignupPHP"] = "<br> The passwords do not align"; 
-				$isTomfuckeryAtPlay = true;
+				$isTheHTMLInputInvalid = true;
 			}
 		}
 		else {
 			$_SESSION["errorsForSignupPHP"] = "<br> The password has dodgey shit in it"; 
-			$isTomfuckeryAtPlay = true;
+			$isTheHTMLInputInvalid = true;
 		}
 
 		if($name == "" || $pass == "") {
 			$_SESSION["errorsForSignupPHP"] = "<br> No input"; 
-			echo "<br> The username or password didnt get assigned";
-			$isTomfuckeryAtPlay = true;
+			echo "<br> The username or password didnt get assigned a value";
+			$isTheHTMLInputInvalid = true;
 		}
 		
-		if(!$isTomfuckeryAtPlay) {
+		if(!$isTheHTMLInputInvalid) {
 
 			include("../db.inc.php");
 
@@ -70,7 +70,6 @@
 				//if the execution is sucessful then create an input to post back
 				if($sql->execute()) {
 					echo($name . " was added successfully");
-					$_SESSION["sucessforSignUpPHP"] = "<br> The name " . $name . " was added successfully";
 					$_SESSION["sucessforLoginPHP"] = "<br> The name " . $name . " was added successfully";
 					$con->close();
 					header("Location: ../Login/login.html.php");
@@ -80,17 +79,14 @@
 				else {
 					die("An Error in the SQL Query : " . mysqli_error($con));
 				}
+				$con->close();
 			}
 		}
 		//if there are errors then add them to an input to post back
 		else {
 			echo "There is messing at play!";
 		}
-		
-		//close the connection
-		$con->close();
 	}
-
 	header("Location: signup.html.php");
 	exit;
 ?>

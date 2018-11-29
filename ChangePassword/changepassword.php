@@ -16,17 +16,17 @@
 		include('../utilities.php');
 		$utilities = new Filters();
 		$crypto = new Encryption();
-		$isTomfuckeryAtPlay = false;
+		$isValidAndNotMessedWith = false;
 		$oldPassword = "";
 		$pass = "";
 		
-		//Check to see if the username inputted has illegal characters
+		//Check to see if the password inputted has illegal characters
 		if($utilities->filterValidation($_POST['oldpassword'])) {
 			$oldPassword = $utilities->sanitise($_POST['oldpassword']);
 		}
 		else {
 			$_SESSION["errorsforChangePasswordPHP"] = "<br> The old password has dodgey shit in it";
-			$isTomfuckeryAtPlay = true;
+			$isValidAndNotMessedWith = true;
 		}
 		//Check to see if the password inputted has illegal characters
 		if($utilities->filterValidation($_POST['password'])) {
@@ -36,25 +36,25 @@
 				}
 				else {
 					$_SESSION["errorsforChangePasswordPHP"] = "<br> The password is not strong enough <br>";
-					$isTomfuckeryAtPlay = true; 
+					$isValidAndNotMessedWith = true; 
 				}
 			}
 			else {
 				$_SESSION["errorsforChangePasswordPHP"] = "<br> The passwords do not align"; 
-				$isTomfuckeryAtPlay = true;
+				$isValidAndNotMessedWith = true;
 			}
 		}
 		else {
 			$_SESSION["errorsforChangePasswordPHP"] = "<br> The password has dodgey shit in it"; 
-			$isTomfuckeryAtPlay = true;
+			$isValidAndNotMessedWith = true;
 		}
 
 		if($oldPassword == "" || $pass == "") {
 			$_SESSION["errorsforChangePasswordPHP"] = "<br> No input"; 
-			$isTomfuckeryAtPlay = true;
+			$isValidAndNotMessedWith = true;
 		}
 		
-		if(!$isTomfuckeryAtPlay) {
+		if(!$isValidAndNotMessedWith) {
 
 			include("../db.inc.php");
 
