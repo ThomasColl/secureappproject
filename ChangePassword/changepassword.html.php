@@ -7,6 +7,15 @@
 		header("Location: ../LogIn/login.html.php");
 		exit;
 	}
+	if (!isset($_SESSION['lastActivityTime'])) {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
+		$validity->killSession();
+	}
+	else {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
 ?>
 <html>
 	<head>

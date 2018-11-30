@@ -100,4 +100,23 @@
             return $ranString;
         }
     }
+    class Activity {
+        function checkIfUserNeedsToBeLoggedOut() {
+            $time = date("U");
+            $timeOfTimeout = $_SESSION['lastActivityTime'] + (5 * 60);
+
+            if($time > $timeOfTimeout) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        function killSession() {
+            session_unset($_SESSION);
+            session_destroy();
+            session_abort();
+            session_write_close();
+        }
+    }
 ?>

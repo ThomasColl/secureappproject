@@ -7,6 +7,16 @@
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 
+	if (!isset($_SESSION['lastActivityTime'])) {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
+		$validity->killSession();
+	}
+	else {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+	
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		//include the connection to the database
 		include('../utilities.php');

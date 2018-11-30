@@ -5,8 +5,25 @@
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
-	if(!isset($_SESSION)) {
-		session_start();
+	$validity = new Activity();
+	if (!isset($_SESSION['lastActivityTime'])) {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
+		$validity->killSession();
+	}
+	else {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+
+	if (!isset($_SESSION['lastActivityTime'])) {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
+	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
+		$validity->killSession();
+	}
+	else {
+		$_SESSION['lastActivityTime'] = date("U");
 	}
 ?>
 <html>
