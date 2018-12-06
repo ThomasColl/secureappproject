@@ -8,10 +8,7 @@
 		exit;
     }
     else {
-        session_unset($_SESSION);
         session_destroy();
-        session_abort();
-        session_write_close();
         header("Location: ../LogIn/login.html.php");
 		exit;
     }

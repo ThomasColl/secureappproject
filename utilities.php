@@ -174,8 +174,6 @@
         function killSession() {
             try {
                 session_destroy();
-                session_abort();
-                session_write_close();
             }
             catch(Exception $e) {
             }

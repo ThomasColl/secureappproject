@@ -10,11 +10,7 @@
 		header("Location: ../LogIn/login.html.php");
 		exit;
   }
-  if(!isset($_SESSION['id'])) {
-		$validity->createSesh();
-		$_SESSION['lastActivityTime'] = date("U");
-	}
-	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
+  if( $validity->checkIfUserNeedsToBeLoggedOut()) {
 		$validity->killSession();
 	}
 	else {

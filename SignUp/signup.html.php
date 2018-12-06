@@ -19,6 +19,7 @@
 	else if(isset($_SESSION['errorsForLoginPHP'])) {
 		$validity->depreciateAttempts();
 	}
+	
 
 	if($validity->checkLockout() == true) {
 		$_SESSION['lockout'] = date("U") + (5 * 60 );

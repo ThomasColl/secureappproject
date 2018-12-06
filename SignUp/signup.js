@@ -7,15 +7,7 @@ function confirmCheck(form) {
 	var arePasswordsTheSame = confirmPassword(form);
 
 	if(arePasswordsTheSame) {
-		var response;
-		response = confirm("Are you sure these details are correct?");
-			
-		if(response) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return true;
 	}
 	else {
 		alert("The passwords do not match");
