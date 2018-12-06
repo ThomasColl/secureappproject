@@ -94,7 +94,7 @@
             }
             if(!isset($_SESSION['id'])) {
                 echo "<br> mark 3! session id created";
-                $seshID = $_SERVER['HTTP_USER_AGENT'];
+                $seshID = session_id();
                 $_SESSION['id'] = $seshID;
                 $seshQL = "INSERT INTO sessions (id, attempts, lockout) VALUES ('" . $_SESSION['id'] . "', 3, 2)";
                 echo "<br> " . $seshQL;
