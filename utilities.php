@@ -3,25 +3,6 @@
         session_start();
     }
     class Filters {
-        function stripUndesirables($stringToStripTagsFrom) {
-            if(strpos($stringToStripTagsFrom, "<") || strpos($stringToStripTagsFrom, ">")) {
-                echo("You bastard");
-                $stringToStripTagsFrom = str_replace(array('<','>'), '', $stringToStripTagsFrom);
-            }
-            
-            if(strpos($stringToStripTagsFrom, "'")) {
-                $stringToStripTagsFrom = str_replace(array('\''), '', $stringToStripTagsFrom);
-            }
-            if(strpos($stringToStripTagsFrom, "\"")) {
-                echo("You bastard");
-                $stringToStripTagsFrom = str_replace('"', '', $stringToStripTagsFrom);
-            }
-            if(strpos($stringToStripTagsFrom, "&")) {
-                echo("You bastard");
-                $stringToStripTagsFrom = str_replace('>', '', $stringToStripTagsFrom);
-            }
-            return $stringToStripTagsFrom;
-        }
         function sanitise($stringWhichRichardMayHaveFuckedWith) {
             if(strpos($stringWhichRichardMayHaveFuckedWith, "<")) {
                 echo("You bastard");
@@ -47,17 +28,6 @@
             return $stringWhichRichardMayHaveFuckedWith;
         }
     
-        function filterValidation($stringToFilter) {
-            $utilities = new Filters();
-            $strippedString = $utilities->stripUndesirables($stringToFilter);
-            if($strippedString != $stringToFilter || strlen($stringToFilter) == 0) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-
         function determinePasswordStrength($password) {
             $isItStrong = true;
             if(strlen($password) < 8) {

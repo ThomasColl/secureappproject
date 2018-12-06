@@ -30,21 +30,9 @@
 			$pass = "";
 			
 			//Check to see if the username inputted has illegal characters
-			if($utilities->filterValidation($_POST['username'])) {
-				$name = $utilities->sanitise($_POST['username']);
-			}
-			else {
-				$_SESSION["errorsForLoginPHP"] = "<br> The username has dodgey shit in it";
-				$isValid = true;
-			}
+			$name = $utilities->sanitise($_POST['username']);
 			//Check to see if the password inputted has illegal characters
-			if($utilities->filterValidation($_POST['password'])) {
-				$pass = $utilities->sanitise($_POST['password']);
-			}
-			else {
-				$_SESSION["errorsForLoginPHP"] = "<br> The password has dodgey shit in it"; 
-				$isValid = true;
-			}
+			$pass = $utilities->sanitise($_POST['password']);
 
 			if($name == "" || $pass == "") {
 				$_SESSION["errorsForLoginPHP"] = "<br> No input"; 

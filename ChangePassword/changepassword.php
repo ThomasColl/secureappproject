@@ -34,31 +34,19 @@
 		$pass = "";
 		
 		//Check to see if the password inputted has illegal characters
-		if($utilities->filterValidation($_POST['oldpassword'])) {
-			$oldPassword = $utilities->sanitise($_POST['oldpassword']);
-		}
-		else {
-			$_SESSION["errorsforChangePasswordPHP"] = "<br> The old password has dodgey shit in it";
-			$isValidAndNotMessedWith = true;
-		}
+		$oldPassword = $utilities->sanitise($_POST['oldpassword']);
 		//Check to see if the password inputted has illegal characters
-		if($utilities->filterValidation($_POST['password'])) {
-			if ($_POST['password'] == $_POST['cpassword']) {
-				if($utilities->determinePasswordStrength($_POST['password'])) {
-					$pass = $utilities->sanitise($_POST['password']);
-				}
-				else {
-					$_SESSION["errorsforChangePasswordPHP"] = "<br> The password is not strong enough <br>";
-					$isValidAndNotMessedWith = true; 
-				}
+		if ($_POST['password'] == $_POST['cpassword']) {
+			if($utilities->determinePasswordStrength($_POST['password'])) {
+				$pass = $utilities->sanitise($_POST['password']);
 			}
 			else {
-				$_SESSION["errorsforChangePasswordPHP"] = "<br> The passwords do not align"; 
-				$isValidAndNotMessedWith = true;
+				$_SESSION["errorsforChangePasswordPHP"] = "<br> The password is not strong enough <br>";
+				$isValidAndNotMessedWith = true; 
 			}
 		}
 		else {
-			$_SESSION["errorsforChangePasswordPHP"] = "<br> The password has dodgey shit in it"; 
+			$_SESSION["errorsforChangePasswordPHP"] = "<br> The passwords do not align"; 
 			$isValidAndNotMessedWith = true;
 		}
 

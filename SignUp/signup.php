@@ -35,35 +35,22 @@
 		$name = "";
 		$pass = "";
 		
-		//Check to see if the username inputted has illegal characters
-		if($utilities->filterValidation($_POST['username'])) {
-			$name = $utilities->sanitise($_POST['username']);
-		}
-		else {
-			$_SESSION["errorsForSignupPHP"] = "<br> The username has dodgey shit in it";
-			$isTheHTMLInputInvalid = true;
-		}
+		$name = $utilities->sanitise($_POST['username']);
+		
 		//Check to see if the password inputted has illegal characters and is the same as the confirm password
-		if($utilities->filterValidation($_POST['password'])) {
-			if ($_POST['password'] == $_POST['cpassword']) {
-				if($utilities->determinePasswordStrength($_POST['password'])) {
-					$pass = $utilities->sanitise($_POST['password']);
-				}
-				else {
-					$_SESSION["errorsForSignupPHP"] = "<br> The password is not strong enough <br>";
-					$isTheHTMLInputInvalid = true; 
-				}
+		if ($_POST['password'] == $_POST['cpassword']) {
+			if($utilities->determinePasswordStrength($_POST['password'])) {
+				$pass = $utilities->sanitise($_POST['password']);
 			}
 			else {
-				$_SESSION["errorsForSignupPHP"] = "<br> The passwords do not align"; 
-				$isTheHTMLInputInvalid = true;
+				$_SESSION["errorsForSignupPHP"] = "<br> The password is not strong enough <br>";
+				$isTheHTMLInputInvalid = true; 
 			}
 		}
 		else {
-			$_SESSION["errorsForSignupPHP"] = "<br> The password has dodgey shit in it"; 
+			$_SESSION["errorsForSignupPHP"] = "<br> The passwords do not align"; 
 			$isTheHTMLInputInvalid = true;
 		}
-
 		if($name == "" || $pass == "") {
 			$_SESSION["errorsForSignupPHP"] = "<br> No input"; 
 			echo "<br> The username or password didnt get assigned a value";
