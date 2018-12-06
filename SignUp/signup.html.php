@@ -5,15 +5,25 @@
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
+
 	$validity = new Activity();
-	if (!isset($_SESSION['lastActivityTime'])) {
-		$_SESSION['lastActivityTime'] = date("U");
+	if(isset($_SESSION['lockout'])) {
+		header("Location: lockout.php");
+		exit;
 	}
-	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
-		$validity->killSession();
-	}
-	else {
+	else if(!isset($_SESSION['id'])) {
+		echo "<br> mark 1!";
 		$_SESSION['lastActivityTime'] = date("U");
+		$validity->createSesh();
+	}
+	else if(isset($_SESSION['errorsForLoginPHP'])) {
+		$validity->depreciateAttempts();
+	}
+
+	if($validity->checkLockout() == true) {
+		$_SESSION['lockout'] = date("U") + (5 * 60 );
+		header("Location: lockout.php");
+		exit;
 	}
 
 	if (!isset($_SESSION['lastActivityTime'])) {

@@ -101,6 +101,80 @@
         }
     }
     class Activity {
+        function createSesh() {
+            echo "<br> mark 2!";
+            $e = new Encryption();
+
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+
+            if(!isset($_SESSION['id'])) {
+                echo "<br> mark 3! session id created";
+                $seshID = $e->generateRandomString(100);
+                $_SESSION['id'] = $seshID;
+            }
+            $seshQL = "INSERT INTO sessions (id, attempts, lockout) VALUES ('" . $_SESSION['id'] . "', 3, 2)";
+            echo "<br> " . $seshQL;
+            $seshResult = mysqli_query($seshCon, $seshQL);
+            if(!$seshResult) {
+                die("it died");
+            }
+            $seshCon->close();
+        }
+        function checkLockout() {
+            $a = new Activity();
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+
+            $seshQL = "SELECT * FROM sessions WHERE id= '" . $_SESSION['id'] . "'";
+            $seshResult = mysqli_query($seshCon, $seshQL);
+            if(!$seshResult) {
+                die(" <br> fuck you richard, you made me do this, making everything harder then it needs to be");
+            }
+            else {
+                $row = mysqli_fetch_array($seshResult);
+                if ($row['lockout'] == 1) {
+                    $seshCon->close();
+                    return true;
+                }
+                $seshCon->close();
+                return false;
+            }
+
+            $seshCon->close();
+        }
+        function endLockout() {
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+            $seshQL = "UPDATE sessions SET lockout=2, attempts=3 WHERE id= '" . $_SESSION['id'] . "'";
+            if(!$seshCon->query($seshQL)) {
+                die("damn");
+            }
+            unset($_SESSION['errorsForLoginPHP']);
+        }
+        function depreciateAttempts() {
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+            $seshQL = "SELECT * FROM sessions WHERE id= '" . $_SESSION['id'] . "'";
+            $seshResult = mysqli_query($seshCon, $seshQL);
+            if(!$seshResult) {
+                die("No such session exists");
+            }
+            else {
+                $row = mysqli_fetch_array($seshResult);
+                if($row['attempts'] == 1) {
+                    $seshQL = "UPDATE sessions SET lockout=1 WHERE id= '" . $_SESSION['id'] . "'";
+                    if(!$seshCon->query($seshQL)) {
+                        die("damn");
+                    }
+                }
+                $newSeshQL = "UPDATE sessions SET attempts=" . ($row['attempts'] - 1) . " WHERE id='" . $_SESSION['id'] . "'";
+                echo "<br> " . $newSeshQL;
+                $seshResult = mysqli_query($seshCon, $newSeshQL);
+                if(!$seshResult) {
+                    die("damn");
+                }
+                else {
+                    $_SESSION['loginAttempts'] = ($row['attempts'] - 1);
+                }
+            }
+        }
         function checkIfUserNeedsToBeLoggedOut() {
             $time = date("U");
             $timeOfTimeout = $_SESSION['lastActivityTime'] + (5 * 60);
@@ -113,10 +187,13 @@
             }
         }
         function killSession() {
-            session_unset($_SESSION);
-            session_destroy();
-            session_abort();
-            session_write_close();
+            try {
+                session_destroy();
+                session_abort();
+                session_write_close();
+            }
+            catch(Exception $e) {
+            }
         }
     }
 ?>

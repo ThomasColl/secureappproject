@@ -7,7 +7,10 @@
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 	
-	if (!isset($_SESSION['lastActivityTime'])) {
+	include('../utilities.php');
+	$validity = new Activity();
+	if(!isset($_SESSION['id'])) {
+		$validity->createSesh();
 		$_SESSION['lastActivityTime'] = date("U");
 	}
 	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
@@ -20,7 +23,6 @@
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(!isset($_SESSION['lockout'])) {
 			//include the connection to the database
-			include('../utilities.php');
 			$utilities = new Filters();
 			$crypto = new Encryption();
 			$isValid = false;
@@ -67,8 +69,10 @@
 				else {
 					$_SESSION["sucessforLoginPHP"] = $name;
 					$_SESSION["token"] = random_bytes(32);
-					header("Location: ../MainMenu/mainmenu.html.php");
-					exit;
+					if(isset($_SESSION["token"])) {
+						header("Location: ../MainMenu/mainmenu.html.php");
+						exit;
+					}
 				}
 
 				//close the connection

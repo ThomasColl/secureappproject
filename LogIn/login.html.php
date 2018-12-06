@@ -5,33 +5,27 @@
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
+	include('../utilities.php');
+	$validity = new Activity();
 	if(isset($_SESSION['lockout'])) {
 		header("Location: lockout.php");
 		exit;
 	}
-	else if(!isset($_SESSION['loginAttempts'])) {
-		$_SESSION['loginAttempts'] = 3;
+	else if(!isset($_SESSION['id'])) {
+		echo "<br> mark 1!";
+		$_SESSION['lastActivityTime'] = date("U");
+		$validity->createSesh();
 	}
 	else if(isset($_SESSION['errorsForLoginPHP'])) {
-		$_SESSION['loginAttempts'] -= 1;
+		$validity->depreciateAttempts();
 	}
 
-	if($_SESSION['loginAttempts'] <= 0) {
-		unset($_SESSION['loginAttempts']);
+	if($validity->checkLockout() == true) {
 		$_SESSION['lockout'] = date("U") + (5 * 60 );
 		header("Location: lockout.php");
 		exit;
 	}
 
-	if (!isset($_SESSION['lastActivityTime'])) {
-		$_SESSION['lastActivityTime'] = date("U");
-	}
-	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
-		$validity->killSession();
-	}
-	else {
-		$_SESSION['lastActivityTime'] = date("U");
-	}
 ?>
 <html>
 	<head>
@@ -49,7 +43,7 @@
 					echo $_SESSION["errorsForLoginPHP"];
 					unset($_SESSION["errorsForLoginPHP"]);
 					try {
-						echo "You have " . $_SESSION['loginAttempts'] . " attempts left";
+						echo "<br> You have " . $_SESSION['loginAttempts'] . " attempt(s) left";
 					}
 					catch (Exception $e) {
 						$_SESSION['lockout'] = date("U") + (5 * 60 );

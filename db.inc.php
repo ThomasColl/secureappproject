@@ -41,6 +41,25 @@
 					echo "well its done";
 				}
 			}
+			if(!$con->query("CREATE DATABASE sessions")) {
+				die("There was an error in MySql: " . $con->error);
+			}
+			else {
+				$con = mysqli_connect($hostname, $username, $password, "sessions");
+				
+				$sql = "CREATE TABLE sessions (
+					`id` VARCHAR(256) PRIMARY KEY, 
+					`attempts`  INT() NOT NULL,
+					`lockout` INT() NOT NULL
+					)";
+				
+				if(!$con->query($sql)) {
+					die("There was an error in MySql: " . $con->error);
+				}
+				else {
+					echo "well its done";
+				}
+			}
 		}
 	}
 ?>

@@ -23,6 +23,9 @@
     }
     else {
         unset($_SESSION['lockout']);
+        include("../utilities.php");
+        $validity = new Activity();
+        $validity->endLockout();
         header("Location: login.html.php");
 	    exit;
     }
