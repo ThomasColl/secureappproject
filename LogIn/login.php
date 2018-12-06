@@ -9,7 +9,7 @@
 	
 	include('../utilities.php');
 	$validity = new Activity();
-	if(!isset($_SESSION['id'])) {
+	if(!isset($_COOKIE['id'])) {
 		$validity->createSesh();
 		$_SESSION['lastActivityTime'] = date("U");
 	}

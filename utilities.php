@@ -93,9 +93,9 @@
                 }
             }
             if(!isset($_SESSION['id'])) {
+                setcookie("id", session_id(), time() + (86400 * 30), "/");
                 echo "<br> mark 3! session id created";
-                $seshID = session_id();
-                $_SESSION['id'] = $seshID;
+                $_SESSION['id'] = $_COOKIE['id'];
                 $seshQL = "INSERT INTO sessions (id, attempts, lockout) VALUES ('" . $_SESSION['id'] . "', 3, 2)";
                 echo "<br> " . $seshQL;
                 $seshResult = mysqli_query($seshCon, $seshQL);

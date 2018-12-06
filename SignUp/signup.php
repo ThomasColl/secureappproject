@@ -12,7 +12,7 @@
 		header("Location: lockout.php");
 		exit;
 	}
-	else if(!isset($_SESSION['id'])) {
+	else if(!isset($_COOKIE['id'])) {
 		echo "<br> mark 1!";
 		$_SESSION['lastActivityTime'] = date("U");
 		$validity->createSesh();
