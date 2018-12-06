@@ -112,7 +112,7 @@
             $seshQL = "SELECT * FROM sessions WHERE id= '" . $_SESSION['id'] . "'";
             $seshResult = mysqli_query($seshCon, $seshQL);
             if(!$seshResult) {
-                die(" <br> fuck you richard, you made me do this, making everything harder then it needs to be");
+                die(" <br> Cannot Find Session ID");
             }
             else {
                 $row = mysqli_fetch_array($seshResult);
