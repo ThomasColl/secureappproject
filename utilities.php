@@ -5,23 +5,18 @@
     class Filters {
         function sanitise($stringWhichRichardMayHaveFuckedWith) {
             if(strpos($stringWhichRichardMayHaveFuckedWith, "<")) {
-                echo("You bastard");
                 $stringWhichRichardMayHaveFuckedWith = str_replace('<', '&gt;', $stringWhichRichardMayHaveFuckedWith);
             }
             if(strpos($stringWhichRichardMayHaveFuckedWith, ">")) {
-                echo("You bastard");
                 $stringWhichRichardMayHaveFuckedWith = str_replace('>', '&lt;', $stringWhichRichardMayHaveFuckedWith);
             }
             if(strpos($stringWhichRichardMayHaveFuckedWith, "'")) {
-                echo("You bastard");
                 $stringWhichRichardMayHaveFuckedWith = str_replace('\'', '&#039;', $stringWhichRichardMayHaveFuckedWith);
             }
             if(strpos($stringWhichRichardMayHaveFuckedWith, "\"")) {
-                echo("You bastard");
                 $stringWhichRichardMayHaveFuckedWith = str_replace('"', '&quot;', $stringWhichRichardMayHaveFuckedWith);
             }
             if(strpos($stringWhichRichardMayHaveFuckedWith, "&")) {
-                echo("You bastard");
                 $stringWhichRichardMayHaveFuckedWith = str_replace('>', '&amp;', $stringWhichRichardMayHaveFuckedWith);
             }
             

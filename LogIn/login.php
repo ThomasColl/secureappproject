@@ -34,7 +34,7 @@
 			//Check to see if the password inputted has illegal characters
 			$pass = $utilities->sanitise($_POST['password']);
 
-			if($name == "" || $pass == "") {
+			if($name == "" || $utilities->determinePasswordStrength($pass)) {
 				$_SESSION["errorsForLoginPHP"] = "<br> No input"; 
 				echo "<br> The username or password didnt get assigned";
 				$isValid = true;
