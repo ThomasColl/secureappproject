@@ -13,6 +13,9 @@
 		$validity->createSesh();
 		$_SESSION['lastActivityTime'] = date("U");
 	}
+	if(!isset($_SESSION['lastActivityTime'])) {
+		$_SESSION['lastActivityTime'] = date("U");
+	}
 	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
 		$validity->killSession();
 	}
