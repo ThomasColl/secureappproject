@@ -2,6 +2,7 @@
 <!-- Student Number: C00204384 -->
 <?php 
 	session_start();
+	error_reporting(E_ERROR | E_PARSE);
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
@@ -41,7 +42,7 @@
 	<head>
 		<title> Security Assignment </title>
 		<link rel="stylesheet" href="../base.css">
-		<script type="text/javascript" src="../base.js"></script>
+		<script type="text/javascript" src="login.js"></script>
 	</head>
 	<body>	
 		<h1> Welcome to my project! </h1>

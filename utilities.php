@@ -1,6 +1,7 @@
 <?php
     if(!isset($_SESSION)) {
         session_start();
+        error_reporting(E_ERROR | E_PARSE);
     }
     class Filters {
         function sanitise($stringWhichRichardMayHaveFuckedWith) {
@@ -68,36 +69,36 @@
     class Activity {
         function createSesh() {
             $e = new Encryption();
-
+            error_reporting(E_ERROR | E_PARSE);
             $seshCon = mysqli_connect("localhost", "root", "", "sessions");
             if(!$seshCon) {
+                $seshCon = mysqli_connect("localhost", "root", "");
                 if(!$seshCon->query("CREATE DATABASE sessions")) {
-                    die("There was an error in MySql: " . $con->error);
+                    die("There was an error in MySql: " . $seshCon->error);
                 }
-                else {
-                    $con = mysqli_connect($hostname, $username, $password, "sessions");
+                $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+                if(!$seshCon) {
+                    die("There was an error in MySql: " . $seshCon->error);
+                }
                     
-                    $sql = "CREATE TABLE sessions (
-                        `id` VARCHAR(256) PRIMARY KEY, 
-                        `attempts`  INT() NOT NULL,
-                        `lockout` INT() NOT NULL
-                        )";
-                    
-                    if(!$con->query($sql)) {
-                        die("There was an error in MySql: " . $con->error);
-                    }
-                    else {
-                        echo "well its done";
-                    }
+                $sql = "CREATE TABLE sessions (
+                    `id` VARCHAR(256) PRIMARY KEY, 
+                    `attempts`  INT,
+                    `lockout` INT 
+                    )";
+                        
+                if(!$seshCon->query($sql)) {
+                    die("There was an error in MySql: " . $seshCon->error);
                 }
             }
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
             if(!isset($_SESSION['id'])) {
                 $ran = $e->generateRandomString(75);
                 $_SESSION['id'] = $ran;
                 $seshQL = "INSERT INTO sessions (id, attempts, lockout) VALUES ('" . $_SESSION['id'] . "', 3, 2)";
                 $seshResult = mysqli_query($seshCon, $seshQL);
                 if(!$seshResult) {
-                    die("it died");
+                    die("it died " .  $seshCon->error);
                 }    
             }
             $seshCon->close();

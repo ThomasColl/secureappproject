@@ -13,7 +13,6 @@
 	$dbname = "users";
 	
 	$con = mysqli_connect($hostname, $username, $password, $dbname);
-	// $con = mysqli_connect($hostname, $username, $password);
 
 	if(!$con)
 	{
@@ -32,25 +31,6 @@
 					`username` VARCHAR(50) PRIMARY KEY, 
 					`password`  VARCHAR(256) NOT NULL,
 					`salt` VARCHAR(256) NOT NULL
-					)";
-				
-				if(!$con->query($sql)) {
-					die("There was an error in MySql: " . $con->error);
-				}
-				else {
-					echo "well its done";
-				}
-			}
-			if(!$con->query("CREATE DATABASE sessions")) {
-				die("There was an error in MySql: " . $con->error);
-			}
-			else {
-				$con = mysqli_connect($hostname, $username, $password, "sessions");
-				
-				$sql = "CREATE TABLE sessions (
-					`id` VARCHAR(256) PRIMARY KEY, 
-					`attempts`  INT() NOT NULL,
-					`lockout` INT() NOT NULL
 					)";
 				
 				if(!$con->query($sql)) {
