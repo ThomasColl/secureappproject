@@ -3,12 +3,14 @@
 
 <?php 
 	session_start();
+	error_reporting(E_ERROR | E_PARSE);
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 
 	include('../utilities.php');
 	$validity = new Activity();
+	echo "<br> Position 1";
 	if(!isset($_SESSION["token"])) {
 		header("Location: ../LogIn/login.html.php");
 		exit;
@@ -23,15 +25,15 @@
 		$_SESSION['lastActivityTime'] = date("U");
 	}
 
+	echo "<br> Position 2";
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		//include the connection to the database
-		include('../utilities.php');
 		$utilities = new Filters();
 		$crypto = new Encryption();
 		$isValidAndNotMessedWith = false;
 		$oldPassword = "";
 		$pass = "";
-		
+		echo "<br> Position 3";
 		//Check to see if the password inputted has illegal characters
 		$oldPassword = $utilities->sanitise($_POST['oldpassword']);
 		//Check to see if the password inputted has illegal characters
@@ -54,6 +56,7 @@
 			$isValidAndNotMessedWith = true;
 		}
 		
+		echo "<br> Position 4";
 		if(!$isValidAndNotMessedWith) {
 
 			include("../db.inc.php");
@@ -63,10 +66,13 @@
 			$row = mysqli_fetch_array($result);
 			if(!$result)
 			{
+				echo "<br> Position 5";
 				die("An Error in the SQL Query : " . mysqli_error($con));
 			
 			}
+			echo "<br> Position 6";
 			if($row['password'] != $crypto->encrypt($oldPassword, $row['salt'])) {
+				echo "<br> Position 7";
 				$_SESSION["errorsforChangePasswordPHP"] = "<br> The old password is incorrect";
 				$con->close();
 				header("Location: changepassword.html.php");
@@ -78,10 +84,12 @@
 				$row = mysqli_fetch_array($result);
 				if(!$result)
 				{
+					echo "<br> Position 8";
 					die("An Error in the SQL Query : " . mysqli_error($con));
 				
 				}
 				else {
+					echo "<br> Position 9";
 					$con->close();
 					header("Location: ../MainMenu/logout.php");
 					exit;

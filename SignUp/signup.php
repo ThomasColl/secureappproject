@@ -39,16 +39,13 @@
 			$isTheHTMLInputInvalid = true;
 		}
 		if($name == "" || $pass == "") {
-			$_SESSION["errorsForSignupPHP"] = "<br> No input"; 
-			echo "<br> The username or password didnt get assigned a value";
+			$_SESSION["errorsForSignupPHP"] = "<br> There was no input"; 
 			$isTheHTMLInputInvalid = true;
 		}
-		
 		if(!$isTheHTMLInputInvalid) {
-
 			include("../db.inc.php");
 
-			$query = mysqli_query($con, "SELECT COUNT(1) FROM users WHERE username=" . $name);
+			$query = mysqli_query($con, "SELECT * FROM users WHERE username='" . $name . "'");
 			if(!$query) {
 			}
 			else {
@@ -65,7 +62,6 @@
 					
 					//if the execution is sucessful then create an input to post back
 					if($sql->execute()) {
-						echo($name . " was added successfully");
 						$_SESSION["sucessforLoginPHP"] = "<br> The name " . $name . " was added successfully";
 						$con->close();
 						header("Location: ../Login/login.html.php");
@@ -77,7 +73,7 @@
 					}
 					$con->close();
 				}
-				}
+			}
 		}
 		//if there are errors then add them to an input to post back
 		else {

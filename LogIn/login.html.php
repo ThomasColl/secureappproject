@@ -42,7 +42,7 @@
 	<head>
 		<title> Security Assignment </title>
 		<link rel="stylesheet" href="../base.css">
-		<script type="text/javascript" src="login.js"></script>
+		<script type="text/javascript" src="../base.js"></script>
 	</head>
 	<body>	
 		<h1> Welcome to my project! </h1>
