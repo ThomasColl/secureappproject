@@ -9,21 +9,13 @@
 	
 	include('../utilities.php');
 	$validity = new Activity();
-	if(!isset($_COOKIE['id'])) {
-		$validity->createSesh();
-		$_SESSION['lastActivityTime'] = date("U");
-	}
-	if(!isset($_SESSION['lastActivityTime'])) {
-		$_SESSION['lastActivityTime'] = date("U");
-	}
-	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
-		$validity->killSession();
-	}
-	else {
-		$_SESSION['lastActivityTime'] = date("U");
-	}
 	
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if(!isset($_SESSION['id'])){
+		$_SESSION["errorsForLoginPHP"] = "<br> Now now, you shouldnt be trying that sorta thing!";
+		header("Location: login.html.php");
+		exit;
+	}
+	else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(!isset($_SESSION['lockout'])) {
 			//include the connection to the database
 			$utilities = new Filters();
@@ -37,12 +29,14 @@
 			//Check to see if the password inputted has illegal characters
 			$pass = $utilities->sanitise($_POST['password']);
 
-			if($name == "" || $utilities->determinePasswordStrength($pass)) {
-				$_SESSION["errorsForLoginPHP"] = "<br> No input"; 
-				echo "<br> The username or password didnt get assigned";
+			if($name == "") {
+				$_SESSION["errorsForLoginPHP"] = "<br> The username or password didnt get assigned 1"; 
 				$isValid = true;
 			}
-			
+			else if(!$utilities->determinePasswordStrength($pass)) {
+				$_SESSION["errorsForLoginPHP"] = "<br> The username or password didnt get assigned 2"; 
+				$isValid = true;
+			}
 			if(!$isValid) {
 
 				include("../db.inc.php");
@@ -54,6 +48,7 @@
 				{
 					die("An Error in the SQL Query : " . mysqli_error($con));
 				}
+
 				if($row['username'] != $name || $row['password'] != $crypto->encrypt($pass, $row['salt'])) {
 					$_SESSION["errorsForLoginPHP"] = "<br> The username (". $name . ")/password combination does not match";
 				}
@@ -70,9 +65,6 @@
 				$con->close();
 
 
-			}
-			else {
-				echo "There is something dodgey at play!";
 			}
 		}
 		else {

@@ -17,7 +17,7 @@
                 $stringWhichRichardMayHaveFuckedWith = str_replace('"', '&quot;', $stringWhichRichardMayHaveFuckedWith);
             }
             if(strpos($stringWhichRichardMayHaveFuckedWith, "&")) {
-                $stringWhichRichardMayHaveFuckedWith = str_replace('>', '&amp;', $stringWhichRichardMayHaveFuckedWith);
+                $stringWhichRichardMayHaveFuckedWith = str_replace('&', '&amp;', $stringWhichRichardMayHaveFuckedWith);
             }
             
             return $stringWhichRichardMayHaveFuckedWith;
@@ -67,7 +67,6 @@
     }
     class Activity {
         function createSesh() {
-            echo "<br> mark 2!";
             $e = new Encryption();
 
             $seshCon = mysqli_connect("localhost", "root", "", "sessions");
@@ -93,17 +92,32 @@
                 }
             }
             if(!isset($_SESSION['id'])) {
-                setcookie("id", session_id(), time() + (86400 * 30), "/");
-                echo "<br> mark 3! session id created";
-                $_SESSION['id'] = $_COOKIE['id'];
+                $ran = $e->generateRandomString(75);
+                $_SESSION['id'] = $ran;
                 $seshQL = "INSERT INTO sessions (id, attempts, lockout) VALUES ('" . $_SESSION['id'] . "', 3, 2)";
-                echo "<br> " . $seshQL;
                 $seshResult = mysqli_query($seshCon, $seshQL);
                 if(!$seshResult) {
                     die("it died");
                 }    
             }
             $seshCon->close();
+        }
+        function setLockout() {
+            $seshCon = mysqli_connect("localhost", "root", "", "sessions");
+            $seshQL = "SELECT * FROM sessions WHERE id= '" . $_SESSION['id'] . "'";
+            $seshResult = mysqli_query($seshCon, $seshQL);
+            if(!$seshResult) {
+                die("No such session exists");
+            }
+            else {
+                $row = mysqli_fetch_array($seshResult);
+                if($row['attempts'] == 1) {
+                    $seshQL = "UPDATE sessions SET lockout=1 WHERE id= '" . $_SESSION['id'] . "'";
+                    if(!$seshCon->query($seshQL)) {
+                        die("damn");
+                    }
+                }
+            }
         }
         function checkLockout() {
             $a = new Activity();
@@ -150,7 +164,6 @@
                     }
                 }
                 $newSeshQL = "UPDATE sessions SET attempts=" . ($row['attempts'] - 1) . " WHERE id='" . $_SESSION['id'] . "'";
-                echo "<br> " . $newSeshQL;
                 $seshResult = mysqli_query($seshCon, $newSeshQL);
                 if(!$seshResult) {
                     die("damn");

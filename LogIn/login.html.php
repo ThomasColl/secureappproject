@@ -7,21 +7,21 @@
 	header("Pragma: no-cache");
 	include('../utilities.php');
 	$validity = new Activity();
-	if(isset($_SESSION['lockout'])) {
-		header("Location: lockout.php");
-		exit;
-	}
-	else if(!isset($_COOKIE['id'])) {
-		echo "<br> mark 1!";
+	
+	if(!isset($_SESSION['id'])) {
 		$_SESSION['lastActivityTime'] = date("U");
 		$validity->createSesh();
+	}
+	else if(isset($_SESSION['lockout'])) {
+		header("Location: lockout.php");
+		exit;
 	}
 	else if(isset($_SESSION['errorsForLoginPHP'])) {
 		$validity->depreciateAttempts();
 	}
 
 	if($validity->checkLockout() == true) {
-		$_SESSION['lockout'] = date("U") + (5 * 60 );
+		$_SESSION['lockout'] = date("U") + (5 * 60);
 		header("Location: lockout.php");
 		exit;
 	}
@@ -78,6 +78,7 @@
 			
 			<br><br>
 			<BR><BR>
+			<input type="hidden" name="secret" id="secret" value="122334566785" readonly="readonly"> 
 			
 			<!-- Use div and CSS to centre buttons -->
 			<div id="centre">

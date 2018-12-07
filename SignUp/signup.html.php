@@ -7,27 +7,26 @@
 	header("Pragma: no-cache");
 	include('../utilities.php');
 	$validity = new Activity();
-	if(isset($_SESSION['lockout'])) {
-		header("Location: lockout.php");
-		exit;
-	}
-	else if(!isset($_COOKIE['id'])) {
+	if(!isset($_SESSION['id'])) {
 		echo "<br> mark 1!";
 		$_SESSION['lastActivityTime'] = date("U");
 		$validity->createSesh();
 	}
+	else if(isset($_SESSION['lockout'])) {
+		header("Location: lockout.php");
+		exit;
+	}
 	else if(isset($_SESSION['errorsForLoginPHP'])) {
 		$validity->depreciateAttempts();
 	}
-	
 
 	if($validity->checkLockout() == true) {
-		$_SESSION['lockout'] = date("U") + (5 * 60 );
+		$_SESSION['lockout'] = date("U") + (5 * 60);
 		header("Location: lockout.php");
 		exit;
 	}
 
-	if (!isset($_SESSION['lastActivityTime'])) {
+	if(!isset($_SESSION['lastActivityTime'])) {
 		$_SESSION['lastActivityTime'] = date("U");
 	}
 	else if( $validity->checkIfUserNeedsToBeLoggedOut()) {
